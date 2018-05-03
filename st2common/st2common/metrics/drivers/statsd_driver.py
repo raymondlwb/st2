@@ -16,7 +16,7 @@ from numbers import Number
 from oslo_config import cfg
 import statsd
 
-from st2common.metrics.metrics import BaseMetricsDriver
+from st2common.metrics.metrics import BaseMetricsDriver, check_key
 
 
 class StatsdDriver(BaseMetricsDriver):
@@ -28,20 +28,20 @@ class StatsdDriver(BaseMetricsDriver):
     def time(self, key, time):
         """ Timer metric
         """
-        assert isinstance(key, str)
+        check_key(key)
         assert isinstance(time, Number)
         self._connection.timing(key, time)
 
     def inc_counter(self, key, amount=1):
         """ Increment counter
         """
-        assert isinstance(key, str)
+        check_key(key)
         assert isinstance(amount, Number)
         self._connection.incr(key, amount)
 
     def dec_counter(self, key, amount=1):
         """ Decrement metric
         """
-        assert isinstance(key, str)
+        check_key(key)
         assert isinstance(amount, Number)
         self._connection.decr(key, amount)
